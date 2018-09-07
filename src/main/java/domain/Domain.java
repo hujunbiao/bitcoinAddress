@@ -42,6 +42,7 @@ public class Domain {
             DeterministicSeed transactionSeed = transactionWallet.getKeyChainSeed();
             String mnemonicCode = BitCoinUtil.SPACE_JOINER.join(transactionSeed.getMnemonicCode());
             System.out.println(mnemonicCode);
+            String mnemonicCodeFileName = String.valueOf(System.currentTimeMillis());
             List<EscrowAddressPo> escrowAddressPoList = new ArrayList<EscrowAddressPo>();
             int total = 100;
             for (int i = 0; i < total; i++) {
@@ -50,6 +51,7 @@ public class Domain {
                 DeterministicKeyChain deterministicKeyChain = DeterministicKeyChain.builder().seed(deterministicSeed).build();
                 BigInteger privHexKey = deterministicKeyChain.getKeyByPath(HDUtils.parsePath(keyByPath.toString()), true).getPrivKey();
                 ECKey ecKey = ECKey.fromPrivate(privHexKey);
+                String pubKey = ecKey.getPublicKeyAsHex();
                 String privKey = ecKey.getPrivateKeyEncoded(params).toString();
                 Address address = ecKey.toAddress(params);
                 logger.info(i + " privKey:" + privKey + " ********** " + "address:" + address.toBase58());
@@ -59,12 +61,11 @@ public class Domain {
                 escrowAddressPo.setCoinType(1);
                 escrowAddressPo.setAddress(address.toBase58());
                 escrowAddressPo.setAddressType(0);
-                escrowAddressPo.setPubKey("456");
+                escrowAddressPo.setPubKey(pubKey);
                 escrowAddressPo.setIndex(i);
-                escrowAddressPo.setBelongTo("5656");
+                escrowAddressPo.setBelongTo(mnemonicCodeFileName);
                 escrowAddressPo.setAddressState(0);
                 escrowAddressPo.setCreateTime(new Date());
-                escrowAddressPoRepository.save(escrowAddressPo);
                 escrowAddressPoList.add(escrowAddressPo);
                 if (escrowAddressPoList.size() == 100) {
                     escrowAddressPoRepository.saveAll(escrowAddressPoList);
