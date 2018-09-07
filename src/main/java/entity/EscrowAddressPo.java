@@ -61,7 +61,7 @@ public class EscrowAddressPo implements Serializable {
     /**
      * 钱包索引
      */
-    @Column(name = "index")
+    @Column(name = "`index`")
     private Integer index;
 
     /**

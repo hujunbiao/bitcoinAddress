@@ -8,5 +8,4 @@
       <artifactId>bitcoinj-core</artifactId>
       <version>0.14.7</version>
 </dependency>
-           
 ```
